@@ -5,8 +5,9 @@ Bot faisant le pont entre IRC et Mumble (messages textes)
 # Installation #
 
 Dépendances :
-- Ruby (ici 2.1)
-- Bundler (`gem install bundler`)
+
+* Ruby (ici 2.1)
+* Bundler (`gem install bundler`)
 
 Installation :  
 `bundle install` (Assurez-vous d’avoir `bundle` dans votre PATH)
