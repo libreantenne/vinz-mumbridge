@@ -20,7 +20,9 @@ $cli = Mumble::Client.new('libreantenne.org', 64738, '|')
 
 $cli.on_text_message do |msg| 
 	case msg.message.chomp
-		when /./
+        when /^#/
+            puts "Command, not forwarded to IRC."
+		when //
 			say("#{$cli.users[msg.actor].name}> #{coder.decode(Sanitize.clean(msg.message))}", @channel)
 			puts "#{$cli.users[msg.actor].name}@M> #{msg.message}"
 		when "disconnect"
