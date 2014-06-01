@@ -8,7 +8,7 @@ require './function.inc.rb'
 
 coder = HTMLEntities.new
 
-# [CONFIG]
+# [CONFIG IRC]
 @server = 'irc.inframonde.org'
 @port = 6667
 @channel = '#antenne'
@@ -16,7 +16,13 @@ coder = HTMLEntities.new
 @verbose = false
 # [/CONFIG]
 
-$cli = Mumble::Client.new('libreantenne.org', 64738, '|')
+# [CONFIG MuMBLE]
+@mserver = 'libreantenne.org'
+@mport = 64738
+@mnick = '|'
+# [/CONFIG]
+
+$cli = Mumble::Client.new(@mserver, @mport, @mnick)
 
 $cli.on_text_message do |msg| 
 	case msg.message.chomp

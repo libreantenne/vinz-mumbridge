@@ -19,7 +19,7 @@ Lancement :
 
 La configuration se fait dans `app.rb` à l’aide des variables `@server`, `@port`, `@nick`, `@channel` et `@verbose` concernant IRC.
 
-Pour le mumble, il faut modifier la ligne 19.
+Pour le mumble, ce sont les lignes 20 à 22.
 
 # Autre chose ?
 
