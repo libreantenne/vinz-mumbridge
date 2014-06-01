@@ -9,15 +9,15 @@ require './function.inc.rb'
 coder = HTMLEntities.new
 
 # [CONFIG IRC]
-@server = 'irc.smoothirc.net'
+@server = 'irc.inframonde.org'
 @port = 6667
-@channel = '#caca'
+@channel = '#antenne'
 @nick = 'M'
 @verbose = true
 # [/CONFIG]
 
 # [CONFIG MuMBLE]
-@mserver = 'savhon.org'
+@mserver = 'libreantenne.org'
 @mport = 64738
 @mnick = '|'
 # [/CONFIG]
