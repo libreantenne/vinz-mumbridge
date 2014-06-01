@@ -45,6 +45,7 @@ $irc = TCPSocket.new(@server, @port)
 }
 sleep 10
 $cli.connect
+sleep 1
 join @channel
 
 while line = $irc.gets.strip
