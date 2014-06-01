@@ -38,24 +38,21 @@ $cli.on_text_message do |msg|
 	end
 end
 
-$cli.connect
 $irc = TCPSocket.new(@server, @port)
 
 ["NICK #{@nick}", "USER #{@nick} 0 * :Suppositoire"].each { |command|
   $irc.puts(command)
 }
 sleep 10
+$cli.connect
 join @channel
 
 while line = $irc.gets.strip
 	if line =~ /PRIVMSG ([^ :]+) +:(.+)/
 		m, sender, target, message = *line.match(/:([^!]*)![^ ].* +PRIVMSG ([^ :]+) +:(.+)/)
-		case message
-			when //
-				message = message.gsub(/((http:\/\/|https:\/\/)?(www.)?(([a-zA-Z0-9\-]){2,}\.){1,4}([a-zA-Z]){2,6}(\/([a-zA-Z\-_\/\.0-9#:?=&;,\+%]*)?)?)/, '<a href="\1">\1</a>')
-				$cli.text_channel("Root", "<span style=\"color: #663399;\">#{sender}</span> : #{message.force_encoding("UTF-8")}")
-				puts "#{sender}@IRC> #{message}"
-		end
+		message = message.gsub(/((http:\/\/|https:\/\/)?(www.)?(([a-zA-Z0-9\-]){2,}\.){1,4}([a-zA-Z]){2,6}(\/([a-zA-Z\-_\/\.0-9#:?=&;,\+%]*)?)?)/, '<a href="\1">\1</a>')
+		$cli.text_channel("Root", "<span style=\"color: #663399;\">#{sender}</span> : #{message.force_encoding("UTF-8")}")
+		puts "#{sender}@IRC> #{message}"
 	end
 
 	if line =~ /^:(\w+)!.+JOIN.+$/
