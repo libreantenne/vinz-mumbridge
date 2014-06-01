@@ -9,15 +9,15 @@ require './function.inc.rb'
 coder = HTMLEntities.new
 
 # [CONFIG IRC]
-@server = 'irc.inframonde.org'
+@server = 'irc.smoothirc.net'
 @port = 6667
-@channel = '#antenne'
+@channel = '#caca'
 @nick = 'M'
-@verbose = false
+@verbose = true
 # [/CONFIG]
 
 # [CONFIG MuMBLE]
-@mserver = 'libreantenne.org'
+@mserver = 'savhon.org'
 @mport = 64738
 @mnick = '|'
 # [/CONFIG]
@@ -49,23 +49,24 @@ sleep 1
 join @channel
 
 while line = $irc.gets.strip
-	if line =~ /PRIVMSG ([^ :]+) +:(.+)/
+	if line =~ /PRIVMSG ([^ :]+) +:[[:cntrl:]]ACTION(.+)[[:cntrl:]]/
+		m, sender, target, action = *line.match(/:([^!]*)![^ ].* +PRIVMSG ([^ :]+) +:[[:cntrl:]]ACTION(.+)[[:cntrl:]]/)
+		action = action.gsub(/((http:\/\/|https:\/\/)?(www.)?(([a-zA-Z0-9\-]){2,}\.){1,4}([a-zA-Z]){2,6}(\/([a-zA-Z\-_\/\.0-9#:?=&;,\+%]*)?)?)/, '<a href="\1">\1</a>')
+		$cli.text_channel("Root", "<i>* <span style=\"color: #663399;\">#{sender}</span> #{action.force_encoding("UTF-8")}")
+		puts "#{sender}@IRC> /me #{action}"
+	elsif line =~ /PRIVMSG ([^ :]+) +:(.+)/
 		m, sender, target, message = *line.match(/:([^!]*)![^ ].* +PRIVMSG ([^ :]+) +:(.+)/)
 		message = message.gsub(/((http:\/\/|https:\/\/)?(www.)?(([a-zA-Z0-9\-]){2,}\.){1,4}([a-zA-Z]){2,6}(\/([a-zA-Z\-_\/\.0-9#:?=&;,\+%]*)?)?)/, '<a href="\1">\1</a>')
 		$cli.text_channel("Root", "<span style=\"color: #663399;\">#{sender}</span> : #{message.force_encoding("UTF-8")}")
 		puts "#{sender}@IRC> #{message}"
-	end
-
-	if line =~ /^:(\w+)!.+JOIN.+$/
+	elsif line =~ /^:(\w+)!.+JOIN.+$/
 		$cli.text_channel("Root", "<i>*#{$1} joined*</i>")
-	end
-
-	if line =~ /PING :(.+)$/
+	elsif line =~ /PING :(.+)$/
 		puts("--> Server PING [#{$1}]")
 		sendRaw("PONG :#{$1}")
 	end
 
-	if line =~ /(.*)/ && @verbose
-		puts($1)
+	if @verbose
+		puts(line)
 	end
 end
