@@ -29,7 +29,7 @@ end
 
 def say(sayMessage, dest)
     sendRaw("PRIVMSG #{dest} :#{sayMessage}")
-    puts("[SAY #{dest} - #{sayMessage} - #{@server}]")
+    # puts("[SAY #{dest} - #{sayMessage} - #{@server}]")
 end
 
 def notice(noticeMsg, dest)
