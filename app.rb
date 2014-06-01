@@ -26,8 +26,8 @@ $cli = Mumble::Client.new(@mserver, @mport, @mnick)
 
 $cli.on_text_message do |msg| 
 	case msg.message.chomp
-        when /^#/
-            puts "Command, not forwarded to IRC."
+		when /^#/
+			puts "Command, not forwarded to IRC."
 		when //
 			say("#{$cli.users[msg.actor].name}> #{coder.decode(Sanitize.clean(msg.message))}", @channel)
 			puts "#{$cli.users[msg.actor].name}@M> #{msg.message}"
@@ -48,26 +48,26 @@ sleep 10
 join @channel
 
 while line = $irc.gets.strip
-    if line =~ /PRIVMSG ([^ :]+) +:(.+)/
-        m, sender, target, message = *line.match(/:([^!]*)![^ ].* +PRIVMSG ([^ :]+) +:(.+)/)
-        case message
-            when //
-            	message = message.gsub(/((http:\/\/|https:\/\/)?(www.)?(([a-zA-Z0-9\-]){2,}\.){1,4}([a-zA-Z]){2,6}(\/([a-zA-Z\-_\/\.0-9#:?=&;,\+%]*)?)?)/, '<a href="\1">\1</a>')
-            	$cli.text_channel("Root", "<span style=\"color: #663399;\">#{sender}</span> : #{message.force_encoding("UTF-8")}")
-                puts "#{sender}@IRC> #{message}"
-        end      
-    end    
+	if line =~ /PRIVMSG ([^ :]+) +:(.+)/
+		m, sender, target, message = *line.match(/:([^!]*)![^ ].* +PRIVMSG ([^ :]+) +:(.+)/)
+		case message
+			when //
+				message = message.gsub(/((http:\/\/|https:\/\/)?(www.)?(([a-zA-Z0-9\-]){2,}\.){1,4}([a-zA-Z]){2,6}(\/([a-zA-Z\-_\/\.0-9#:?=&;,\+%]*)?)?)/, '<a href="\1">\1</a>')
+				$cli.text_channel("Root", "<span style=\"color: #663399;\">#{sender}</span> : #{message.force_encoding("UTF-8")}")
+				puts "#{sender}@IRC> #{message}"
+		end
+	end
 
-    if line =~ /^:(\w+)!.+JOIN.+$/
-    	$cli.text_channel("Root", "<i>*#{$1} joined*</i>")
-    end
+	if line =~ /^:(\w+)!.+JOIN.+$/
+		$cli.text_channel("Root", "<i>*#{$1} joined*</i>")
+	end
 
-    if line =~ /PING :(.+)$/
-        puts("--> Server PING [#{$1}]")
-        sendRaw("PONG :#{$1}")
-    end
+	if line =~ /PING :(.+)$/
+		puts("--> Server PING [#{$1}]")
+		sendRaw("PONG :#{$1}")
+	end
 
-    if line =~ /(.*)/ && @verbose
-        puts($1)
-    end
+	if line =~ /(.*)/ && @verbose
+		puts($1)
+	end
 end
